@@ -42,6 +42,7 @@ abstract public class Field<T> {
         this.form = form;
     }
 
+    @NotNull
     public String getParameterName() {
         return this.getForm().getWtfPrefix() + this.getName();
     }
