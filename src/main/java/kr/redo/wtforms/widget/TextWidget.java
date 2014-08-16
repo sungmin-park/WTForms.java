@@ -11,4 +11,6 @@ public class TextWidget extends Widget {
     public String render(@NotNull String id, @NotNull String name, String value) throws Exception {
         return new HtmlCanvas().input(type("text").id(id).name(name).value(value)).toHtml();
     }
+
+    public static final TextWidget TEXT_WIDGET = new TextWidget();
 }

@@ -8,4 +8,6 @@ public class StringConverter extends Converter<String> {
     public String fromRequestParam(@Nullable String param) {
         return param;
     }
+
+    public static final StringConverter STRING_CONVERTER = new StringConverter();
 }

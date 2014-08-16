@@ -15,4 +15,6 @@ public class IntegerConverter extends Converter<Integer> {
             return null;
         }
     }
+
+    public static final IntegerConverter INTEGER_CONVERTER = new IntegerConverter();
 }

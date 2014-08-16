@@ -14,13 +14,13 @@ public class Field<T, C extends Converter<T>, W extends Widget> {
     String name = "";
 
     @NotNull
-    C converter;
+    final C converter;
 
     @Nullable
     T value;
 
     @NotNull
-    W widget;
+    final W widget;
 
     @NotNull
     private Form form;

@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import static kr.redo.wtforms.converters.StringConverter.STRING_CONVERTER;
+import static kr.redo.wtforms.widget.TextWidget.TEXT_WIDGET;
 import static org.junit.Assert.assertEquals;
 
 public class FormTest {
@@ -81,7 +83,7 @@ public class FormTest {
         private IntegerField integerField = new IntegerField();
 
         @NotNull
-        private Field<String, StringConverter, TextWidget> text = new Field<>(new StringConverter(), new TextWidget());
+        private Field<String, StringConverter, TextWidget> text = new Field<>(STRING_CONVERTER, TEXT_WIDGET);
 
         @NotNull
         private TextField hasDefault = new TextField("default");
