@@ -2,14 +2,27 @@ package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.Form;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 
-abstract public class Field {
+abstract public class Field<T> {
     @NotNull
     String name;
+    @Nullable
+
+    T value;
     @NotNull
     private Form form;
+
+    @Nullable
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(@Nullable T value) {
+        this.value = value;
+    }
 
     @NotNull
     public String getName() {

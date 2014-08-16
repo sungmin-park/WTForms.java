@@ -11,10 +11,7 @@ import java.io.IOException;
 
 import static org.rendersnake.HtmlAttributesFactory.type;
 
-public class TextField extends Field {
-    @Nullable
-    private String value;
-
+public class TextField extends Field<String> {
     @NotNull
     @Override
     public String toString() {
@@ -26,15 +23,6 @@ public class TextField extends Field {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Nullable
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(@Nullable String value) {
-        this.value = value;
     }
 
     public void processData(@NotNull HttpServletRequest request) {
