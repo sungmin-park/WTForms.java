@@ -1,6 +1,7 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.Form;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,5 +53,13 @@ abstract public class Field<T> {
         this.setName(name);
     }
 
-    public abstract void processData(HttpServletRequest request);
+    public void processData(HttpServletRequest request) {
+        final String[] parameterValues = request.getParameterValues(getParameterName());
+        if (ArrayUtils.isEmpty(parameterValues)) {
+            return;
+        }
+        processData(parameterValues[0]);
+    }
+
+    protected abstract void processData(@NotNull String parameterValue);
 }
