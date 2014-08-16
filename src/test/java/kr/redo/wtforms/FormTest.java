@@ -6,7 +6,6 @@ import kr.redo.wtforms.fields.Field;
 import kr.redo.wtforms.fields.IntegerField;
 import kr.redo.wtforms.fields.TextAreaField;
 import kr.redo.wtforms.fields.TextField;
-import kr.redo.wtforms.widget.TextWidget;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -83,7 +82,7 @@ public class FormTest {
         private IntegerField integerField = new IntegerField();
 
         @NotNull
-        private Field<String, StringConverter, TextWidget> text = new Field<>(STRING_CONVERTER, TEXT_WIDGET);
+        private Field<String, StringConverter> text = new Field<>(STRING_CONVERTER, TEXT_WIDGET);
 
         @NotNull
         private TextField hasDefault = new TextField("default");
@@ -105,7 +104,7 @@ public class FormTest {
         }
 
         @NotNull
-        public Field<String, StringConverter, TextWidget> getText() {
+        public Field<String, StringConverter> getText() {
             return text;
         }
 

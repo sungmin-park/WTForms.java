@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class Field<T, C extends Converter<T>, W extends Widget> {
+public class Field<T, C extends Converter<T>> {
     @NotNull
     String name = "";
 
@@ -20,17 +20,17 @@ public class Field<T, C extends Converter<T>, W extends Widget> {
     T value;
 
     @NotNull
-    final W widget;
+    final Widget widget;
 
     @NotNull
     private Form form;
 
-    public Field(@NotNull C converter, @NotNull W widget) {
+    public Field(@NotNull C converter, @NotNull Widget widget) {
         this.converter = converter;
         this.widget = widget;
     }
 
-    public Field(@Nullable T value, C converter, W widget) {
+    public Field(@Nullable T value, C converter, Widget widget) {
         this(converter, widget);
         this.value = value;
     }

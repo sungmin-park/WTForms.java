@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static kr.redo.wtforms.converters.IntegerConverter.INTEGER_CONVERTER;
 
-public class IntegerField extends Field<Integer, IntegerConverter, TextWidget> {
+public class IntegerField extends Field<Integer, IntegerConverter> {
     public IntegerField() {
         this(null);
     }
