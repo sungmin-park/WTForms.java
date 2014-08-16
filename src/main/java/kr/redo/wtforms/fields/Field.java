@@ -39,7 +39,11 @@ public class Field<T, C extends Converter<T>, W extends Widget> {
     @Override
     public String toString() {
         final String parameterName = getParameterName();
-        return widget.render(parameterName, parameterName, converter.toRequestParam(value));
+        try {
+            return widget.render(parameterName, parameterName, converter.toRequestParam(value));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Nullable

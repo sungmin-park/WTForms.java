@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import kr.redo.wtforms.converters.StringConverter;
 import kr.redo.wtforms.fields.Field;
 import kr.redo.wtforms.fields.IntegerField;
+import kr.redo.wtforms.fields.TextAreaField;
 import kr.redo.wtforms.fields.TextField;
 import kr.redo.wtforms.widget.TextWidget;
 import org.jetbrains.annotations.NotNull;
@@ -57,12 +58,19 @@ public class FormTest {
                 "<input type=\"text\" id=\"wtf-field\" name=\"wtf-field\"/>",
                 testForm.getField().toString()
         );
+        assertEquals("<textarea id=\"wtf-text-area\" name=\"wtf-text-area\"></textarea>", testForm.getTextArea().toString());
         request.setParameter("wtf-field", "value");
+        request.setParameter("wtf-text-area", "<h1>test</h1>");
         testForm.wtfProcessData(request);
         assertEquals(
                 "<input type=\"text\" id=\"wtf-field\" name=\"wtf-field\" value=\"value\"/>",
                 testForm.getField().toString()
         );
+        assertEquals(
+                "<textarea id=\"wtf-text-area\" name=\"wtf-text-area\">&lt;h1&gt;test&lt;/h1&gt;</textarea>",
+                testForm.getTextArea().toString()
+        );
+
     }
 
     public static class TestForm extends Form {
@@ -80,6 +88,9 @@ public class FormTest {
 
         @NotNull
         private IntegerField hasDefaultInteger = new IntegerField(1);
+
+        @NotNull
+        private TextAreaField textArea = new TextAreaField();
 
         @NotNull
         public TextField getField() {
@@ -104,6 +115,11 @@ public class FormTest {
         @NotNull
         public IntegerField getHasDefaultInteger() {
             return hasDefaultInteger;
+        }
+
+        @NotNull
+        public TextAreaField getTextArea() {
+            return textArea;
         }
     }
 }
