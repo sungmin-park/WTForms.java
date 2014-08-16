@@ -89,4 +89,9 @@ public class Field<T, C extends Converter<T>, W extends Widget> {
             setValue(converted);
         }
     }
+
+    @Nullable
+    public String getParameterValue() {
+        return converter.toRequestParam(getValue());
+    }
 }

@@ -1,5 +1,6 @@
 package kr.redo.wtforms;
 
+import com.google.common.collect.ImmutableMap;
 import kr.redo.wtforms.converters.StringConverter;
 import kr.redo.wtforms.fields.Field;
 import kr.redo.wtforms.fields.IntegerField;
@@ -8,8 +9,6 @@ import kr.redo.wtforms.widget.TextWidget;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,6 +35,13 @@ public class FormTest {
         testForm.wtfProcessData(request);
         assertEquals("value", testForm.getField().getValue());
         assertEquals((Integer) 1, testForm.getIntegerField().getValue());
+        assertEquals(
+                ImmutableMap.of(
+                        "wtf-field", "value", "wtf-integer-field", "1", "wtf-has-default", "default",
+                        "wtf-has-default-integer", "1"
+                ),
+                testForm.getParameterMap()
+        );
 
         request.setParameter("wtf-integer-field", "not a number");
         testForm.wtfProcessData(request);

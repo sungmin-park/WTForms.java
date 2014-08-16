@@ -1,6 +1,7 @@
 package kr.redo.wtforms;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
+import com.google.common.collect.ImmutableMap;
 import kr.redo.wtforms.fields.Field;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,5 +51,17 @@ abstract public class Form {
         for (Field field : getWtfFields()) {
             field.processData(request);
         }
+    }
+
+    public ImmutableMap<String, String> getParameterMap() {
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        for (Field field : getWtfFields()) {
+            final String parameterValue = field.getParameterValue();
+            if (parameterValue == null) {
+                continue;
+            }
+            builder.put(field.getParameterName(), parameterValue);
+        }
+        return builder.build();
     }
 }
