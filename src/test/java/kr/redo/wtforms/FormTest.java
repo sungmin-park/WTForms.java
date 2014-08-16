@@ -1,5 +1,6 @@
 package kr.redo.wtforms;
 
+import kr.redo.wtforms.fields.IntegerField;
 import kr.redo.wtforms.fields.TextField;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -20,10 +21,13 @@ public class FormTest {
         final MockHttpServletRequest request = new MockHttpServletRequest();
         testForm.wtfProcessData(request);
         assertEquals(null, testForm.getField().getValue());
+        assertEquals(null, testForm.getIntegerField().getValue());
 
         request.setParameter("wtf-field", "value");
+        request.setParameter("wtf-integer-field", "1");
         testForm.wtfProcessData(request);
         assertEquals("value", testForm.getField().getValue());
+        assertEquals((Integer) 1, testForm.getIntegerField().getValue());
     }
 
     @Test
@@ -48,8 +52,16 @@ public class FormTest {
         private TextField field = new TextField();
 
         @NotNull
+        private IntegerField integerField = new IntegerField();
+
+        @NotNull
         public TextField getField() {
             return field;
+        }
+
+        @NotNull
+        public IntegerField getIntegerField() {
+            return integerField;
         }
     }
 }

@@ -12,8 +12,6 @@ abstract public class Field {
     String name;
     @NotNull
     private Form form;
-    @Nullable
-    private String value;
 
     @NotNull
     public String getName() {
@@ -42,20 +40,5 @@ abstract public class Field {
         this.setName(name);
     }
 
-    @Nullable
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(@Nullable String value) {
-        this.value = value;
-    }
-
-    public void processData(@NotNull HttpServletRequest request) {
-        final String[] parameterValues = request.getParameterValues(getParameterName());
-        if (ArrayUtils.isEmpty(parameterValues)) {
-            return;
-        }
-        setValue(parameterValues[0]);
-    }
+    public abstract void processData(HttpServletRequest request);
 }
