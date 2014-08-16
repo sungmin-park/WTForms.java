@@ -1,10 +1,15 @@
 package kr.redo.wtforms;
 
+import kr.redo.wtforms.converters.StringConverter;
+import kr.redo.wtforms.fields.Field;
 import kr.redo.wtforms.fields.IntegerField;
 import kr.redo.wtforms.fields.TextField;
+import kr.redo.wtforms.widget.TextWidget;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,6 +27,9 @@ public class FormTest {
         testForm.wtfProcessData(request);
         assertEquals(null, testForm.getField().getValue());
         assertEquals(null, testForm.getIntegerField().getValue());
+        assertEquals(null, testForm.getText().getValue());
+        assertEquals("default", testForm.getHasDefault().getValue());
+        assertEquals((Integer) 1, testForm.getHasDefaultInteger().getValue());
 
         request.setParameter("wtf-field", "value");
         request.setParameter("wtf-integer-field", "1");
@@ -59,6 +67,15 @@ public class FormTest {
         private IntegerField integerField = new IntegerField();
 
         @NotNull
+        private Field<String, StringConverter, TextWidget> text = new Field<>(new StringConverter(), new TextWidget());
+
+        @NotNull
+        private TextField hasDefault = new TextField("default");
+
+        @NotNull
+        private IntegerField hasDefaultInteger = new IntegerField(1);
+
+        @NotNull
         public TextField getField() {
             return field;
         }
@@ -66,6 +83,21 @@ public class FormTest {
         @NotNull
         public IntegerField getIntegerField() {
             return integerField;
+        }
+
+        @NotNull
+        public Field<String, StringConverter, TextWidget> getText() {
+            return text;
+        }
+
+        @NotNull
+        public TextField getHasDefault() {
+            return hasDefault;
+        }
+
+        @NotNull
+        public IntegerField getHasDefaultInteger() {
+            return hasDefaultInteger;
         }
     }
 }

@@ -1,29 +1,15 @@
 package kr.redo.wtforms.fields;
 
-import org.jetbrains.annotations.NotNull;
-import org.rendersnake.HtmlAttributes;
-import org.rendersnake.HtmlCanvas;
+import kr.redo.wtforms.converters.StringConverter;
+import kr.redo.wtforms.widget.TextWidget;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-
-import static org.rendersnake.HtmlAttributesFactory.type;
-
-public class TextField extends Field<String> {
-    @NotNull
-    @Override
-    public String toString() {
-        try {
-            final String parameterName = getParameterName();
-            final HtmlAttributes attributes = type("text").id(parameterName).name(parameterName).value(getValue());
-            final HtmlCanvas canvas = new HtmlCanvas();
-            return canvas.input(attributes).toHtml();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+public class TextField extends Field<String, StringConverter, TextWidget> {
+    public TextField() {
+        this(null);
     }
 
-    @Override
-    protected void processData(@NotNull String parameterValue) {
-        setValue(parameterValue);
+    public TextField(@Nullable String value) {
+        super(value, new StringConverter(), new TextWidget());
     }
 }

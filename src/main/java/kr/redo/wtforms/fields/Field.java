@@ -1,20 +1,46 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.Form;
+import kr.redo.wtforms.converters.Converter;
+import kr.redo.wtforms.widget.Widget;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 
-abstract public class Field<T> {
+public class Field<T, C extends Converter<T>, W extends Widget> {
     @NotNull
-    String name;
-    @Nullable
+    String name = "";
 
+    @NotNull
+    C converter;
+
+    @Nullable
     T value;
+
+    @NotNull
+    W widget;
+
     @NotNull
     private Form form;
+
+    public Field(@NotNull C converter, @NotNull W widget) {
+        this.converter = converter;
+        this.widget = widget;
+    }
+
+    public Field(@Nullable T value, C converter, W widget) {
+        this(converter, widget);
+        this.value = value;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        final String parameterName = getParameterName();
+        return widget.render(parameterName, parameterName, converter.toRequestParam(value));
+    }
 
     @Nullable
     public T getValue() {
@@ -58,8 +84,9 @@ abstract public class Field<T> {
         if (ArrayUtils.isEmpty(parameterValues)) {
             return;
         }
-        processData(parameterValues[0]);
+        final T converted = converter.fromRequestParam(parameterValues[0]);
+        if (converted != null) {
+            setValue(converted);
+        }
     }
-
-    protected abstract void processData(@NotNull String parameterValue);
 }

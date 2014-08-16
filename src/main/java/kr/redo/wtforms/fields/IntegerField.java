@@ -1,13 +1,15 @@
 package kr.redo.wtforms.fields;
 
-import org.jetbrains.annotations.NotNull;
+import kr.redo.wtforms.converters.IntegerConverter;
+import kr.redo.wtforms.widget.TextWidget;
+import org.jetbrains.annotations.Nullable;
 
-public class IntegerField extends Field<Integer> {
-    @Override
-    protected void processData(@NotNull String parameterValue) {
-        try {
-            setValue(Integer.parseInt(parameterValue));
-        } catch (NumberFormatException ignored) {
-        }
+public class IntegerField extends Field<Integer, IntegerConverter, TextWidget> {
+    public IntegerField() {
+        this(null);
+    }
+
+    public IntegerField(@Nullable Integer defaultValue) {
+        super(defaultValue, new IntegerConverter(), new TextWidget());
     }
 }
