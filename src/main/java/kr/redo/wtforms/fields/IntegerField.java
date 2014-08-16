@@ -24,6 +24,9 @@ public class IntegerField extends Field{
         if (ArrayUtils.isEmpty(parameterValues)) {
             return;
         }
-        setValue(Integer.parseInt(parameterValues[0]));
+        try {
+            setValue(Integer.parseInt(parameterValues[0]));
+        } catch (NumberFormatException ignored) {
+        }
     }
 }

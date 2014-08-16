@@ -28,6 +28,10 @@ public class FormTest {
         testForm.wtfProcessData(request);
         assertEquals("value", testForm.getField().getValue());
         assertEquals((Integer) 1, testForm.getIntegerField().getValue());
+
+        request.setParameter("wtf-integer-field", "not a number");
+        testForm.wtfProcessData(request);
+        assertEquals((Integer) 1, testForm.getIntegerField().getValue());
     }
 
     @Test
