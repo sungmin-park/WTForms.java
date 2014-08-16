@@ -25,6 +25,7 @@ abstract public class Form {
                 .mapToObj(i -> {
                     final Field field = (Field) methodAccess.invoke(form, i);
                     field.bind(form, UPPER_CAMEL.to(LOWER_HYPHEN, methodNames[i].substring(3)));
+                    //noinspection unchecked
                     return field;
                 }).toArray(Field[]::new);
         form.setWtfFields(fields);

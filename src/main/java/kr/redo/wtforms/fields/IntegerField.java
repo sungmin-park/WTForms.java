@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class IntegerField extends Field{
+public class IntegerField extends Field {
     @Nullable
     private Integer value;
 

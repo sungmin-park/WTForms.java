@@ -1,9 +1,7 @@
 # IDEA
-*.iml
-*.ipr
-*.iws
+/.idea/
 /out/
+*.iml
 
-# gradle
-/build/
-/.gradle/
+# maven
+/target/
