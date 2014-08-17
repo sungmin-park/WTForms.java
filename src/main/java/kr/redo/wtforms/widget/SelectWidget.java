@@ -20,11 +20,11 @@ public class SelectWidget extends Widget<BaseOptionsField> {
             final String value = parameterOptionPair.getValue();
             HtmlAttributes attrs = value(value);
             if (value.equals(parameterValue)) {
-                attrs = attrs.selected("");
+                attrs = attrs.selected("true");
             }
             select = select.option(attrs).content(parameterOptionPair.getText());
         }
-        return select.toHtml();
+        return select._select().toHtml();
     }
 
     public static final SelectWidget SELECT_WIDGET = new SelectWidget();
