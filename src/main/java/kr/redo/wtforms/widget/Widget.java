@@ -1,9 +1,9 @@
 package kr.redo.wtforms.widget;
 
+import kr.redo.wtforms.fields.BaseField;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-abstract public class Widget {
+abstract public class Widget<T extends BaseField> {
     @NotNull
-    abstract public String render(@NotNull String id, @NotNull String name, @Nullable String value) throws Exception;
+    abstract public String render(T field) throws Exception;
 }

@@ -2,7 +2,7 @@ package kr.redo.wtforms;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.collect.ImmutableMap;
-import kr.redo.wtforms.fields.Field;
+import kr.redo.wtforms.fields.AbstractField;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 
 abstract public class Form {
     @NotNull
-    private Field[] wtfFields;
+    private AbstractField[] wtfFields;
 
     public static <F extends Form> F bind(Class<F> formClass) throws Exception {
         final F form = formClass.newInstance();
@@ -21,24 +21,24 @@ abstract public class Form {
         final String[] methodNames = methodAccess.getMethodNames();
         final Class[][] parameterTypes = methodAccess.getParameterTypes();
         final Class[] returnTypes = methodAccess.getReturnTypes();
-        final Field[] fields = IntStream.range(0, methodNames.length)
-                .filter(i -> parameterTypes[i].length == 0 && Field.class.isAssignableFrom(returnTypes[i]) && methodNames[i].startsWith("get"))
+        final AbstractField[] fields = IntStream.range(0, methodNames.length)
+                .filter(i -> parameterTypes[i].length == 0 && AbstractField.class.isAssignableFrom(returnTypes[i]) && methodNames[i].startsWith("get"))
                 .mapToObj(i -> {
-                    final Field field = (Field) methodAccess.invoke(form, i);
+                    final AbstractField field = (AbstractField) methodAccess.invoke(form, i);
                     field.bind(form, UPPER_CAMEL.to(LOWER_HYPHEN, methodNames[i].substring(3)));
                     //noinspection unchecked
                     return field;
-                }).toArray(Field[]::new);
+                }).toArray(AbstractField[]::new);
         form.setWtfFields(fields);
         return form;
     }
 
     @NotNull
-    public Field[] getWtfFields() {
+    public AbstractField[] getWtfFields() {
         return wtfFields;
     }
 
-    protected void setWtfFields(@NotNull Field[] wtfFields) {
+    protected void setWtfFields(@NotNull AbstractField[] wtfFields) {
         this.wtfFields = wtfFields;
     }
 
@@ -48,14 +48,14 @@ abstract public class Form {
     }
 
     public void wtfProcessData(HttpServletRequest request) {
-        for (Field field : getWtfFields()) {
+        for (AbstractField field : getWtfFields()) {
             field.processData(request);
         }
     }
 
     public ImmutableMap<String, String> getParameterMap() {
         final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        for (Field field : getWtfFields()) {
+        for (AbstractField field : getWtfFields()) {
             final String parameterValue = field.getParameterValue();
             if (parameterValue == null) {
                 continue;

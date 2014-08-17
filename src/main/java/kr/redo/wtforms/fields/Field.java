@@ -1,6 +1,5 @@
 package kr.redo.wtforms.fields;
 
-import kr.redo.wtforms.Form;
 import kr.redo.wtforms.converters.Converter;
 import kr.redo.wtforms.widget.Widget;
 import org.apache.commons.lang3.ArrayUtils;
@@ -9,78 +8,29 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class Field<T, C extends Converter<T>> {
-    @NotNull
-    String name = "";
+public class Field<T, C extends Converter<T>> extends AbstractField<T, C> implements BaseField {
 
     @NotNull
-    final C converter;
+    Widget<BaseField> widget;
 
-    @Nullable
-    T value;
-
-    @NotNull
-    final Widget widget;
-
-    @NotNull
-    private Form form;
-
-    public Field(@NotNull C converter, @NotNull Widget widget) {
-        this.converter = converter;
+    public Field(@NotNull C converter, @NotNull Widget<BaseField> widget) {
+        super(converter);
         this.widget = widget;
     }
 
-    public Field(@Nullable T value, C converter, Widget widget) {
+    public Field(@Nullable T value, C converter, @NotNull Widget<BaseField> widget) {
         this(converter, widget);
-        this.value = value;
+        setValue(value);
     }
 
     @NotNull
     @Override
     public String toString() {
-        final String parameterName = getParameterName();
         try {
-            return widget.render(parameterName, parameterName, converter.toRequestParam(value));
+            return widget.render(this);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Nullable
-    public T getValue() {
-        return value;
-    }
-
-    public void setValue(@Nullable T value) {
-        this.value = value;
-    }
-
-    @NotNull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@NotNull String name) {
-        this.name = name;
-    }
-
-    @NotNull
-    public Form getForm() {
-        return form;
-    }
-
-    public void setForm(@NotNull Form form) {
-        this.form = form;
-    }
-
-    @NotNull
-    public String getParameterName() {
-        return this.getForm().getWtfPrefix() + this.getName();
-    }
-
-    public void bind(@NotNull Form form, @NotNull String name) {
-        this.setForm(form);
-        this.setName(name);
     }
 
     public void processData(HttpServletRequest request) {
@@ -88,14 +38,9 @@ public class Field<T, C extends Converter<T>> {
         if (ArrayUtils.isEmpty(parameterValues)) {
             return;
         }
-        final T converted = converter.fromRequestParam(parameterValues[0]);
+        final T converted = getConverter().fromRequestParam(parameterValues[0]);
         if (converted != null) {
             setValue(converted);
         }
-    }
-
-    @Nullable
-    public String getParameterValue() {
-        return converter.toRequestParam(getValue());
     }
 }
