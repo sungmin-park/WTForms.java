@@ -26,8 +26,12 @@ public class Form {
                 continue;
             }
             final Field field = ((Field) methodAccess.invoke(form, i));
-            field.setName(CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodName.substring(3)));
+            field.bind(form,  CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodName.substring(3)));
         }
         return form;
+    }
+
+    public String prefix() {
+        return "wtf-";
     }
 }

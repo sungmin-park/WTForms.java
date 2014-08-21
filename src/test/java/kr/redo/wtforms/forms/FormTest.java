@@ -8,7 +8,9 @@ public class FormTest {
     @Test
     public void BindWithSubClass() throws InstantiationException, IllegalAccessException {
         final SimpleForm form = Form.bind(SimpleForm.class);
-        Assert.assertEquals(form.getFirst().getName(), "first");
+        final Field first = form.getFirst();
+        Assert.assertEquals(first.getName(), "first");
+        Assert.assertEquals(first.getParameterName(), "wtf-first");
     }
 
     public static class SimpleForm extends Form {
