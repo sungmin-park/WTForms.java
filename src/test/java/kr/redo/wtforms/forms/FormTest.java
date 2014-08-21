@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class FormTest {
     @Test
-    public void BindWithSubClass() throws InstantiationException, IllegalAccessException {
+    public void bindWithSubClass() throws InstantiationException, IllegalAccessException {
         final SimpleForm form = Form.bind(SimpleForm.class);
         final AbstractField first = form.getFirst();
         Assert.assertEquals(first.getName(), "first");
