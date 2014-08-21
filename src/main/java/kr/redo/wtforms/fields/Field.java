@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Field {
     String name;
-    private String[] values = {};
+    protected String[] values = {};
     private Form form;
 
     public String getName() {
@@ -24,10 +24,6 @@ public class Field {
 
     public String getParameterName() {
         return form.prefix() + name;
-    }
-
-    public String[] getValues() {
-        return values;
     }
 
     public void bind(Form form, String name) {

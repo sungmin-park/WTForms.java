@@ -14,15 +14,15 @@ public class FieldTest {
         final MockHttpServletRequest request = new MockHttpServletRequest();
         final Field field = form.getField();
         field.processData(request);
-        assertArrayEquals(field.getValues(), new String[]{});
+        assertArrayEquals(field.values, new String[]{});
         // if there is a data for a field should return values
         request.addParameter("wtf-field", "value");
         field.processData(request);
-        assertArrayEquals(field.getValues(), new String[]{"value"});
+        assertArrayEquals(field.values, new String[]{"value"});
         // if matched values more than one, then takes all of them.
         request.addParameter("wtf-field", "value1");
         field.processData(request);
-        assertArrayEquals(field.getValues(), new String[]{"value", "value1"});
+        assertArrayEquals(field.values, new String[]{"value", "value1"});
     }
 
     public static class FieldTestForm extends Form {
