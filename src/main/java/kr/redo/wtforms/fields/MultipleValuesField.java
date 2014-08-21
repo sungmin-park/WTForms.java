@@ -1,12 +1,21 @@
 package kr.redo.wtforms.fields;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 public class MultipleValuesField extends AbstractField {
+    private String[] values = {};
+
     @Override
     public void processData(HttpServletRequest request) {
-        throw new NotImplementedException();
+        final String[] parameterValues = request.getParameterValues(getParameterName());
+        if (parameterValues == null) {
+            return;
+        }
+        values = Arrays.copyOf(parameterValues, parameterValues.length);
+    }
+
+    public String[] getValues() {
+        return values;
     }
 }
