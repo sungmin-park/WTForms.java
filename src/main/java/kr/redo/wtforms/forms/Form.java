@@ -2,7 +2,7 @@ package kr.redo.wtforms.forms;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.google.common.base.CaseFormat;
-import kr.redo.wtforms.fields.Field;
+import kr.redo.wtforms.fields.AbstractField;
 
 public class Form {
     public static <F extends Form> F bind(Class<F> formClass) throws IllegalAccessException, InstantiationException {
@@ -22,11 +22,11 @@ public class Form {
                 continue;
             }
             // check return type is field
-            if (!Field.class.isAssignableFrom(returnTypes[i])) {
+            if (!AbstractField.class.isAssignableFrom(returnTypes[i])) {
                 continue;
             }
-            final Field field = ((Field) methodAccess.invoke(form, i));
-            field.bind(form,  CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodName.substring(3)));
+            final AbstractField abstractField = ((AbstractField) methodAccess.invoke(form, i));
+            abstractField.bind(form, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodName.substring(3)));
         }
         return form;
     }

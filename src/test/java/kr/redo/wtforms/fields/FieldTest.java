@@ -1,35 +1,31 @@
 package kr.redo.wtforms.fields;
 
+import junit.framework.Assert;
 import kr.redo.wtforms.forms.Form;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import static org.junit.Assert.*;
+import java.util.Optional;
 
 public class FieldTest {
     @Test
-    public void testProcessData() throws InstantiationException, IllegalAccessException {
+    public void testValue() throws InstantiationException, IllegalAccessException {
         final FieldTestForm form = Form.bind(FieldTestForm.class);
-        // if there is no data for a field, should return empty array
+        final Field valueField = form.getField();
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        final Field field = form.getField();
-        field.processData(request);
-        assertArrayEquals(field.values, new String[]{});
-        // if there is a data for a field should return values
+        // if there is no value return null option
+        valueField.processData(request);
+        Assert.assertEquals(Optional.<String>empty(), valueField.getValue());
         request.addParameter("wtf-field", "value");
-        field.processData(request);
-        assertArrayEquals(field.values, new String[]{"value"});
-        // if matched values more than one, then takes all of them.
-        request.addParameter("wtf-field", "value1");
-        field.processData(request);
-        assertArrayEquals(field.values, new String[]{"value", "value1"});
+        valueField.processData(request);
+        Assert.assertEquals(Optional.of("value"), valueField.getValue());
     }
 
     public static class FieldTestForm extends Form {
+        private Field field = new Field();
+
         public Field getField() {
             return field;
         }
-
-        Field field = new Field();
     }
 }
