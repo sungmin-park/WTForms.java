@@ -23,10 +23,6 @@ public class FieldTest {
         request.addParameter("wtf-field", "value1");
         field.processData(request);
         assertArrayEquals(field.getValues(), new String[]{"value", "value1"});
-        // if values are duplicated, just store it.
-        request.addParameter("wtf-field", "value");
-        field.processData(request);
-        assertArrayEquals(field.getValues(), new String[]{"value", "value1", "value"});
     }
 
     public static class FieldTestForm extends Form {
