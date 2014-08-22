@@ -6,7 +6,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OptionsFieldTest {
     @Test
@@ -23,10 +23,10 @@ public class OptionsFieldTest {
     }
 
     public static class OptionsFieldTestForm extends Form {
+        private OptionsField optionsField = new OptionsField();
+
         public OptionsField getOptionsField() {
             return optionsField;
         }
-
-        private OptionsField optionsField = new OptionsField();
     }
 }
