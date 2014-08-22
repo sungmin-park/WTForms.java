@@ -1,9 +1,9 @@
 package kr.redo.wtforms.fields;
 
-import kr.redo.wtforms.transformers.IntegerTransformer;
+import static kr.redo.wtforms.transformers.IntegerTransformer.INTEGER_TRANSFORMER;
 
 public class IntegerField extends Field<Integer> {
     public IntegerField() {
-        super(IntegerTransformer.INTEGER_TRANSFORMER);
+        super(INTEGER_TRANSFORMER);
     }
 }
