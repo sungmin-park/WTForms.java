@@ -6,13 +6,14 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.Optional;
 
+import static kr.redo.wtforms.transformers.StringTransformer.STRING_TRANSFORMER;
 import static org.junit.Assert.assertEquals;
 
 public class OptionsFieldTest {
     @Test
     public void testProcessData() throws InstantiationException, IllegalAccessException {
         final OptionsFieldTestForm form = Form.bind(OptionsFieldTestForm.class);
-        final OptionsField optionsField = form.getOptionsField();
+        final OptionsField<String> optionsField = form.getOptionsField();
         final MockHttpServletRequest request = new MockHttpServletRequest();
         request.addParameter("wtf-options-field", "value");
         optionsField.processData(request);
@@ -23,9 +24,9 @@ public class OptionsFieldTest {
     }
 
     public static class OptionsFieldTestForm extends Form {
-        private OptionsField optionsField = new OptionsField();
+        private OptionsField<String> optionsField = new OptionsField<>(STRING_TRANSFORMER);
 
-        public OptionsField getOptionsField() {
+        public OptionsField<String> getOptionsField() {
             return optionsField;
         }
     }
