@@ -2,6 +2,7 @@ package kr.redo.wtforms.fields;
 
 import junit.framework.Assert;
 import kr.redo.wtforms.forms.Form;
+import kr.redo.wtforms.transformers.StringTransformer;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -22,9 +23,9 @@ public class FieldTest {
     }
 
     public static class FieldTestForm extends Form {
-        private Field field = new Field();
+        private Field<String> field = new Field<>(StringTransformer.STRING_TRANSFORMER);
 
-        public Field getField() {
+        public Field<String> getField() {
             return field;
         }
     }

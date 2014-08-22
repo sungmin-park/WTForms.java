@@ -1,12 +1,22 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.forms.Form;
+import kr.redo.wtforms.transformers.Transformer;
 
 import javax.servlet.http.HttpServletRequest;
 
-abstract public class AbstractField {
-    String name;
+abstract public class AbstractField<T> {
+    private String name;
     private Form form;
+    private Transformer<T> transformer;
+
+    public Transformer<T> getTransformer() {
+        return transformer;
+    }
+
+    public void setTransformer(Transformer<T> transformer) {
+        this.transformer = transformer;
+    }
 
     public String getName() {
         return name;
