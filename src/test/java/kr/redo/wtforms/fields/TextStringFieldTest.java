@@ -14,7 +14,7 @@ public class TextStringFieldTest {
         final TextFieldTestForm form = Form.bind(TextFieldTestForm.class);
         final TextStringField textStringField = form.getTextStringField();
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addParameter("wtf-text-field", "textValue");
+        request.addParameter("wtf-text-string-field", "textValue");
         textStringField.processData(request);
         assertEquals(Optional.of("textValue"), textStringField.getValue());
     }
