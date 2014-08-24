@@ -8,4 +8,8 @@ abstract public class Transformer<T> {
     }
 
     abstract public Optional<T> fromParameterValue(String value);
+
+    public String toParameterLabel(T t) {
+        return toParameterValue(t);
+    }
 }

@@ -1,6 +1,8 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.transformers.Transformer;
+import kr.redo.wtforms.widgets.OptionsWidget;
+import kr.redo.wtforms.widgets.SelectWidget;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -11,8 +13,15 @@ public class OptionsField<T> extends AbstractField<T> {
     @SuppressWarnings("unchecked")
     private T[] options = (T[]) new Object[]{};
 
-    public OptionsField(Transformer<T> transformer) {
+    OptionsWidget widget;
+
+    public OptionsField(Transformer<T> transformer, OptionsWidget widget) {
+        this.widget = widget;
         setTransformer(transformer);
+    }
+
+    public OptionsField(Transformer<T> transformer) {
+        this(transformer, SelectWidget.SELECT_WIDGET);
     }
 
     @Override
@@ -26,7 +35,7 @@ public class OptionsField<T> extends AbstractField<T> {
 
     @Override
     public String render() throws Exception {
-        return null;
+        return widget.render(this);
     }
 
     public Optional<T> getValue() {
@@ -35,5 +44,16 @@ public class OptionsField<T> extends AbstractField<T> {
 
     public void setOptions(T[] options) {
         this.options = options;
+    }
+
+    public Optional<String> getParameterValue() {
+        return value.map(v -> getTransformer().toParameterValue(v));
+    }
+
+    public ParameterOption[] getParameterOptions() {
+        final Transformer<T> transformer = getTransformer();
+        return Arrays.stream(options)
+                .map(o -> new ParameterOption(transformer.toParameterValue(o), transformer.toParameterLabel(o)))
+                .toArray(ParameterOption[]::new);
     }
 }

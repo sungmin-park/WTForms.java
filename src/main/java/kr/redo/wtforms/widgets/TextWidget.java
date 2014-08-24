@@ -5,16 +5,13 @@ import kr.redo.wtforms.utils.ObjectUtils;
 import org.rendersnake.HtmlAttributes;
 import org.rendersnake.HtmlCanvas;
 
-import static org.rendersnake.HtmlAttributesFactory.type;
-
-public class TextWidget implements Widget {
+public class TextWidget extends AbstractWidget implements Widget {
     public static final TextWidget TEXT_WIDGET = new TextWidget();
 
     @Override
     public String render(Field<?> field) throws Exception {
-        final HtmlAttributes attributes = type("text")
-                .id(field.getParameterName()).name(field.getParameterName())
-                .value(ObjectUtils.get(field.getParameterValue()));
+        final HtmlAttributes attributes = makeDefaultAttributes(field)
+                .type("text").value(ObjectUtils.get(field.getParameterValue()));
         return new HtmlCanvas().input(attributes).toHtml();
     }
 }
