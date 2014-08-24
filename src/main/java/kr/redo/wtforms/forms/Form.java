@@ -6,6 +6,7 @@ import kr.redo.wtforms.fields.AbstractField;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Form {
     private static AbstractField[] wtfFields;
@@ -51,5 +52,16 @@ public class Form {
         for (AbstractField field : getWtfFields()) {
             field.processData(request);
         }
+    }
+
+    public boolean validate() throws Exception {
+        for (AbstractField field : wtfFields) {
+            field.validate();
+        }
+        return !hasErrors();
+    }
+
+    private boolean hasErrors() {
+        return Arrays.stream(wtfFields).filter(AbstractField::hasErrors).findFirst().isPresent();
     }
 }

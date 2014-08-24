@@ -4,11 +4,18 @@ import kr.redo.wtforms.forms.Form;
 import kr.redo.wtforms.transformers.Transformer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 abstract public class AbstractField<T> {
     private String name;
     private Form form;
     private Transformer<T> transformer;
+    private final List<String> errors = new ArrayList<>();
+
+    public List<String> getErrors() {
+        return errors;
+    }
 
     public Transformer<T> getTransformer() {
         return transformer;
@@ -34,4 +41,14 @@ abstract public class AbstractField<T> {
     }
 
     public abstract String render() throws Exception;
+
+    public void addError(String message) {
+        getErrors().add(message);
+    }
+
+    abstract public void validate() throws Exception;
+
+    public boolean hasErrors() {
+        return errors.size() > 0;
+    }
 }

@@ -1,6 +1,7 @@
 package kr.redo.wtforms.fields;
 
 import org.apache.commons.lang3.ArrayUtils;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -23,6 +24,11 @@ public class MultipleValueOptionsField extends AbstractField {
     @Override
     public String render() throws Exception {
         return null;
+    }
+
+    @Override
+    public void validate() throws Exception {
+        throw new NotImplementedException();
     }
 
     public String[] getValues() {

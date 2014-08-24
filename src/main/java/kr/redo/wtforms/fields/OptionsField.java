@@ -3,6 +3,7 @@ package kr.redo.wtforms.fields;
 import kr.redo.wtforms.transformers.Transformer;
 import kr.redo.wtforms.widgets.OptionsWidget;
 import kr.redo.wtforms.widgets.SelectWidget;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -36,6 +37,11 @@ public class OptionsField<T> extends AbstractField<T> {
     @Override
     public String render() throws Exception {
         return widget.render(this);
+    }
+
+    @Override
+    public void validate() throws Exception {
+        throw new NotImplementedException();
     }
 
     public Optional<T> getValue() {
