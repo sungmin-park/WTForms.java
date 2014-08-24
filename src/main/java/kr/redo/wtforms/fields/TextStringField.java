@@ -2,8 +2,8 @@ package kr.redo.wtforms.fields;
 
 import static kr.redo.wtforms.transformers.StringTransformer.STRING_TRANSFORMER;
 
-public class TextField extends Field<String> {
-    public TextField() {
+public class TextStringField extends Field<String> {
+    public TextStringField() {
         super(STRING_TRANSFORMER);
     }
 }

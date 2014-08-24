@@ -8,22 +8,22 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
-public class TextFieldTest {
+public class TextStringFieldTest {
     @Test
     public void testProcessData() throws InstantiationException, IllegalAccessException {
         final TextFieldTestForm form = Form.bind(TextFieldTestForm.class);
-        final TextField textField = form.getTextField();
+        final TextStringField textStringField = form.getTextStringField();
         final MockHttpServletRequest request = new MockHttpServletRequest();
         request.addParameter("wtf-text-field", "textValue");
-        textField.processData(request);
-        assertEquals(Optional.of("textValue"), textField.getValue());
+        textStringField.processData(request);
+        assertEquals(Optional.of("textValue"), textStringField.getValue());
     }
 
     public static class TextFieldTestForm extends Form {
-        private TextField textField = new TextField();
+        private TextStringField textStringField = new TextStringField();
 
-        public TextField getTextField() {
-            return textField;
+        public TextStringField getTextStringField() {
+            return textStringField;
         }
     }
 }
