@@ -7,7 +7,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DateFieldTest {
     @Test
@@ -25,10 +25,10 @@ public class DateFieldTest {
     }
 
     public static class DateFieldTestForm extends Form {
+        private DateField dateField = new DateField();
+
         public DateField getDateField() {
             return dateField;
         }
-
-        private DateField dateField = new DateField();
     }
 }
