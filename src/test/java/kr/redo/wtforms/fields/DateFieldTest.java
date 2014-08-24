@@ -20,7 +20,6 @@ public class DateFieldTest {
         // test default date process
         final DateMidnight today = new DateMidnight();
         request.addParameter("wtf-date-field", today.toString("yyyy-MM-dd"));
-        System.err.println(today.toString("yyyy-MM-dd"));
         dateField.processData(request);
         assertEquals(Optional.of(today), dateField.getValue());
     }
