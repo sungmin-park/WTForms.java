@@ -15,6 +15,11 @@ public class MultipleValuesField extends AbstractField {
         values = Arrays.copyOf(parameterValues, parameterValues.length);
     }
 
+    @Override
+    public String render() throws Exception {
+        return null;
+    }
+
     public String[] getValues() {
         return values;
     }

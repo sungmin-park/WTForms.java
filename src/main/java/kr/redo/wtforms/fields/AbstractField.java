@@ -32,4 +32,6 @@ abstract public class AbstractField<T> {
         this.form = form;
         this.name = name;
     }
+
+    public abstract String render() throws Exception;
 }

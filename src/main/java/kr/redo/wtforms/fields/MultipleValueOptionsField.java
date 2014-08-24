@@ -20,6 +20,11 @@ public class MultipleValueOptionsField extends AbstractField {
                 .toArray(String[]::new);
     }
 
+    @Override
+    public String render() throws Exception {
+        return null;
+    }
+
     public String[] getValues() {
         return values;
     }

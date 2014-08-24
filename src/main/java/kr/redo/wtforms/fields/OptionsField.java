@@ -24,6 +24,11 @@ public class OptionsField<T> extends AbstractField<T> {
         value = Arrays.stream(options).filter(o -> getTransformer().toParameterValue(o).equals(parameter)).findFirst();
     }
 
+    @Override
+    public String render() throws Exception {
+        return null;
+    }
+
     public Optional<T> getValue() {
         return value;
     }
