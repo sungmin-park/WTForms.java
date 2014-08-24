@@ -5,13 +5,12 @@ import kr.redo.wtforms.fields.TextStringField;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static kr.redo.wtforms.transformers.StringTransformer.STRING_TRANSFORMER;
 import static kr.redo.wtforms.validators.NotNull.STRING_NOT_NULL;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FormTest {
     @Test
@@ -40,6 +39,14 @@ public class FormTest {
         assertTrue(form.validate());
     }
 
+
+    @Test
+    public void testInlineValidation() throws Exception {
+        InlineValidateForm form = Form.bind(InlineValidateForm.class);
+        assertFalse(form.validate());
+        assertEquals(Arrays.asList("inline error"), form.getTextStringField().getErrors());
+    }
+
     public static class SimpleForm extends Form {
         private Field<String> first = new Field<>(STRING_TRANSFORMER);
 
@@ -50,6 +57,15 @@ public class FormTest {
 
     public static class TestForm extends Form {
         private TextStringField textStringField = new TextStringField(STRING_NOT_NULL);
+
+        @SuppressWarnings("UnusedDeclaration")
+        public TextStringField getTextStringField() {
+            return textStringField;
+        }
+    }
+
+    public static class InlineValidateForm extends Form {
+        private TextStringField textStringField = new TextStringField(f -> f.addError("inline error"));
 
         public TextStringField getTextStringField() {
             return textStringField;

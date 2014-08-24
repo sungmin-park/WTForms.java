@@ -61,7 +61,7 @@ public class Form {
         return !hasErrors();
     }
 
-    private boolean hasErrors() {
+    public boolean hasErrors() {
         return Arrays.stream(wtfFields).filter(AbstractField::hasErrors).findFirst().isPresent();
     }
 }
