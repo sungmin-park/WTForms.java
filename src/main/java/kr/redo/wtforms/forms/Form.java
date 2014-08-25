@@ -6,10 +6,12 @@ import kr.redo.wtforms.fields.AbstractField;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Form {
-    private static AbstractField[] wtfFields;
+    private List<AbstractField> wtfFields = new ArrayList<>();
 
     public static <F extends Form> F bind(Class<F> formClass) throws IllegalAccessException, InstantiationException {
         final F form = formClass.newInstance();
@@ -17,7 +19,7 @@ public class Form {
         final String[] methodNames = methodAccess.getMethodNames();
         final Class[][] parameterTypes = methodAccess.getParameterTypes();
         final Class[] returnTypes = methodAccess.getReturnTypes();
-        final ArrayList<AbstractField> abstractFields = new ArrayList<>(methodNames.length);
+        final List<AbstractField> wtfFields = form.getWtfFields();
         for (int i = 0; i < methodNames.length; i++) {
             // check is this a simple getter
             if (parameterTypes[i].length > 0) {
@@ -34,14 +36,9 @@ public class Form {
             }
             final AbstractField abstractField = ((AbstractField) methodAccess.invoke(form, i));
             abstractField.bind(form, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodName.substring(3)));
-            abstractFields.add(abstractField);
+            wtfFields.add(abstractField);
         }
-        wtfFields = abstractFields.toArray(new AbstractField[abstractFields.size()]);
         return form;
-    }
-
-    public static AbstractField[] getWtfFields() {
-        return wtfFields;
     }
 
     public String prefix() {
@@ -62,6 +59,16 @@ public class Form {
     }
 
     public boolean hasErrors() {
-        return Arrays.stream(wtfFields).filter(AbstractField::hasErrors).findFirst().isPresent();
+        return wtfFields.stream().filter(AbstractField::hasErrors).findAny().isPresent();
+    }
+
+    public Map<String, List<String>> getErrors() {
+        return wtfFields.stream()
+                .filter(AbstractField::hasErrors)
+                .collect(Collectors.toMap(AbstractField::getParameterName, AbstractField::getErrors));
+    }
+
+    public List<AbstractField> getWtfFields() {
+        return wtfFields;
     }
 }

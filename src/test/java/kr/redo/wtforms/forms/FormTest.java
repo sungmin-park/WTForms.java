@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static kr.redo.wtforms.transformers.StringTransformer.STRING_TRANSFORMER;
@@ -31,12 +33,14 @@ public class FormTest {
     public void testValidate() throws Exception {
         TestForm form = Form.bind(TestForm.class);
         assertFalse(form.validate());
+        assertEquals(Arrays.asList("Field should not null."), form.getErrors().get("wtf-text-string-field"));
 
         form = Form.bind(TestForm.class);
         final MockHttpServletRequest request = new MockHttpServletRequest();
         request.addParameter("wtf-text-string-field", "value");
         form.processData(request);
         assertTrue(form.validate());
+        assertEquals(new HashMap<String, List<String>>(), form.getErrors());
     }
 
 
