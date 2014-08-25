@@ -63,4 +63,8 @@ public class Field<T> extends AbstractField<T> {
     public Optional<String> getParameterValue() {
         return value.map(v -> getTransformer().toParameterValue(v));
     }
+
+    public void setValue(Optional<T> value) {
+        this.value = value;
+    }
 }
