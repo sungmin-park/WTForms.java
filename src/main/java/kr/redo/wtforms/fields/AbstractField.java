@@ -10,19 +10,10 @@ import java.util.List;
 abstract public class AbstractField<T> {
     private String name;
     private Form form;
-    private Transformer<T> transformer;
     private final List<String> errors = new ArrayList<>();
 
     public List<String> getErrors() {
         return errors;
-    }
-
-    public Transformer<T> getTransformer() {
-        return transformer;
-    }
-
-    public void setTransformer(Transformer<T> transformer) {
-        this.transformer = transformer;
     }
 
     public String getName() {

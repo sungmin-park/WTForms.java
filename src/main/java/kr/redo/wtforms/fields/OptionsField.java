@@ -14,11 +14,12 @@ public class OptionsField<T> extends AbstractField<T> {
     @SuppressWarnings("unchecked")
     private T[] options = (T[]) new Object[]{};
 
+    private final Transformer<T> transformer;
     OptionsWidget widget;
 
     public OptionsField(Transformer<T> transformer, OptionsWidget widget) {
+        this.transformer = transformer;
         this.widget = widget;
-        setTransformer(transformer);
     }
 
     public OptionsField(Transformer<T> transformer) {
@@ -31,7 +32,7 @@ public class OptionsField<T> extends AbstractField<T> {
         if (parameter == null) {
             return;
         }
-        value = Arrays.stream(options).filter(o -> getTransformer().toParameterValue(o).equals(parameter)).findFirst();
+        value = Arrays.stream(options).filter(o -> transformer.toParameterValue(o).equals(parameter)).findFirst();
     }
 
     @Override
@@ -53,11 +54,10 @@ public class OptionsField<T> extends AbstractField<T> {
     }
 
     public Optional<String> getParameterValue() {
-        return value.map(v -> getTransformer().toParameterValue(v));
+        return value.map(transformer::toParameterValue);
     }
 
     public ParameterOption[] getParameterOptions() {
-        final Transformer<T> transformer = getTransformer();
         return Arrays.stream(options)
                 .map(o -> new ParameterOption(transformer.toParameterValue(o), transformer.toParameterLabel(o)))
                 .toArray(ParameterOption[]::new);

@@ -2,7 +2,7 @@ package kr.redo.wtforms.transformers;
 
 import java.util.Optional;
 
-public class IntegerTransformer extends Transformer<Integer> {
+public class IntegerTransformer extends ValueTransformer<Integer> {
     @Override
     public java.util.Optional<Integer> fromParameterValue(String value) {
         try {

@@ -15,6 +15,7 @@ import static java.util.stream.Collectors.toList;
 import static kr.redo.wtforms.widgets.CheckBoxWidget.CHECK_BOX_WIDGET;
 
 public class MultipleValueOptionsField<T> extends AbstractField<T> {
+    private final Transformer<T> transformer;
     private List<T> values = new ArrayList<>();
     private List<T> options = new ArrayList<>();
     private MultipleValueOptionsWidget widget;
@@ -24,7 +25,7 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
     }
 
     public MultipleValueOptionsField(Transformer<T> transformer, MultipleValueOptionsWidget widget) {
-        this.setTransformer(transformer);
+        this.transformer = transformer;
         this.widget = widget;
     }
 
@@ -35,7 +36,7 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
             return;
         }
         final List<Pair<T, String>> optionParameters =
-                options.stream().map(o -> Pair.with(o, getTransformer().toParameterValue(o))).collect(toList());
+                options.stream().map(o -> Pair.with(o, transformer.toParameterValue(o))).collect(toList());
         values = Arrays.stream(parameterValues)
                 .map(pv -> optionParameters.stream().filter(o -> o.getValue1().equals(pv)).findAny())
                 .filter(Optional::isPresent)
@@ -66,10 +67,10 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
     }
 
     public List<String> getParameterValues() {
-        return values.stream().map(getTransformer()::toParameterLabel).collect(toList());
+        return values.stream().map(transformer::toParameterLabel).collect(toList());
     }
 
     public List<ParameterOption> getParameterOptions() {
-        return options.stream().map(getTransformer()::toParameterOption).collect(toList());
+        return options.stream().map(transformer::toParameterOption).collect(toList());
     }
 }

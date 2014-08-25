@@ -4,7 +4,7 @@ import org.joda.time.DateMidnight;
 
 import java.util.Optional;
 
-public class DateTransformer extends Transformer<DateMidnight>{
+public class DateTransformer extends ValueTransformer<DateMidnight>{
     @Override
     public Optional<DateMidnight> fromParameterValue(String value) {
         return Optional.of(new DateMidnight(value));
