@@ -1,9 +1,9 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.transformers.Transformer;
+import kr.redo.wtforms.validators.MultipleValueOptionsValidator;
 import kr.redo.wtforms.widgets.MultipleValueOptionsWidget;
 import org.javatuples.Pair;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
+import static kr.redo.wtforms.validators.AbstractValidator.StopValidationException;
 import static kr.redo.wtforms.widgets.CheckBoxWidget.CHECK_BOX_WIDGET;
 
 public class MultipleValueOptionsField<T> extends AbstractField<T> {
@@ -19,6 +20,7 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
     private List<T> values = new ArrayList<>();
     private List<T> options = new ArrayList<>();
     private MultipleValueOptionsWidget widget;
+    private List<MultipleValueOptionsValidator<T>> validators = new ArrayList<>();
 
     public MultipleValueOptionsField(Transformer<T> transformer) {
         this(transformer, CHECK_BOX_WIDGET);
@@ -38,7 +40,14 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
         final List<Pair<T, String>> optionParameters =
                 options.stream().map(o -> Pair.with(o, transformer.toParameterValue(o))).collect(toList());
         values = Arrays.stream(parameterValues)
-                .map(pv -> optionParameters.stream().filter(o -> o.getValue1().equals(pv)).findAny())
+                .map(pv -> {
+                    final Optional<Pair<T, String>> find =
+                            optionParameters.stream().filter(o -> o.getValue1().equals(pv)).findAny();
+                    if (!find.isPresent()) {
+                        addError("not a valid choice");
+                    }
+                    return find;
+                })
                 .filter(Optional::isPresent)
                 .map(Optional::get).map(Pair::getValue0)
                 .collect(toList());
@@ -51,7 +60,13 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
 
     @Override
     public void validate() throws Exception {
-        throw new NotImplementedException();
+        for (MultipleValueOptionsValidator<T> v : validators) {
+            try {
+                v.validate(this);
+            } catch (StopValidationException e) {
+                break;
+            }
+        }
     }
 
     public List<T> getValues() {
