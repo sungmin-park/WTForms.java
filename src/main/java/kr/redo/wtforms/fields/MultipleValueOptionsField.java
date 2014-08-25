@@ -1,6 +1,7 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.transformers.Transformer;
+import kr.redo.wtforms.widgets.MultipleValueOptionsWidget;
 import org.javatuples.Pair;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -11,13 +12,20 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
+import static kr.redo.wtforms.widgets.CheckBoxWidget.CHECK_BOX_WIDGET;
 
 public class MultipleValueOptionsField<T> extends AbstractField<T> {
     private List<T> values = new ArrayList<>();
     private List<T> options = new ArrayList<>();
+    private MultipleValueOptionsWidget widget;
 
     public MultipleValueOptionsField(Transformer<T> transformer) {
-        setTransformer(transformer);
+        this(transformer, CHECK_BOX_WIDGET);
+    }
+
+    public MultipleValueOptionsField(Transformer<T> transformer, MultipleValueOptionsWidget widget) {
+        this.setTransformer(transformer);
+        this.widget = widget;
     }
 
     @Override
@@ -37,7 +45,7 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
 
     @Override
     public String render() throws Exception {
-        return null;
+        return widget.render(this);
     }
 
     @Override
@@ -49,11 +57,19 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
         return values;
     }
 
+    public List<T> getOptions() {
+        return options;
+    }
+
     public void setOptions(final List<T> options) {
         this.options = options;
     }
 
-    public List<T> getOptions() {
-        return options;
+    public List<String> getParameterValues() {
+        return values.stream().map(getTransformer()::toParameterLabel).collect(toList());
+    }
+
+    public List<ParameterOption> getParameterOptions() {
+        return options.stream().map(getTransformer()::toParameterOption).collect(toList());
     }
 }
