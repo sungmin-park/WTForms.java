@@ -32,6 +32,10 @@ abstract public class AbstractField {
 
     public abstract String render() throws Exception;
 
+    public String getTag() throws Exception {
+        return render();
+    }
+
     public void addError(String message) {
         getErrors().add(message);
     }
