@@ -36,9 +36,9 @@ public class OptionsFieldTest {
     }
 
     public static class OptionsFieldTestForm extends Form {
-        private OptionsField<String> optionsField = new OptionsField<String>(STRING_TRANSFORMER, NotNull.STRING_NOT_NULL);
+        private SelectField<String> optionsField = new SelectField<String>(STRING_TRANSFORMER, NotNull.STRING_NOT_NULL);
 
-        public OptionsField<String> getOptionsField() {
+        public SelectField<String> getOptionsField() {
             return optionsField;
         }
     }
