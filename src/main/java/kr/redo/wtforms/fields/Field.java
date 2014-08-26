@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 import static kr.redo.wtforms.validators.AbstractValidator.StopValidationException;
 
-public class Field<T> extends AbstractField<T> {
+public class Field<T> extends AbstractField {
     final private List<Validator<T>> validators = new ArrayList<>();
     private Optional<T> value = Optional.empty();
     private Widget widget;

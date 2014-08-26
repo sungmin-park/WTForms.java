@@ -1,16 +1,15 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.forms.Form;
-import kr.redo.wtforms.transformers.Transformer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract public class AbstractField<T> {
+abstract public class AbstractField {
+    private final List<String> errors = new ArrayList<>();
     private String name;
     private Form form;
-    private final List<String> errors = new ArrayList<>();
 
     public List<String> getErrors() {
         return errors;
@@ -41,5 +40,9 @@ abstract public class AbstractField<T> {
 
     public boolean hasErrors() {
         return errors.size() > 0;
+    }
+
+    public void clearErrors() {
+        errors.removeIf(i -> true);
     }
 }

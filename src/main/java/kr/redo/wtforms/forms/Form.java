@@ -71,4 +71,8 @@ public class Form {
     public List<AbstractField> getWtfFields() {
         return wtfFields;
     }
+
+    public void clearErrors() {
+        getWtfFields().forEach(AbstractField::clearErrors);
+    }
 }

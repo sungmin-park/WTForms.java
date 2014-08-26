@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class OptionsField<T> extends AbstractField<T> {
+public class OptionsField<T> extends AbstractField {
     private Optional<T> value = Optional.empty();
     @SuppressWarnings("unchecked")
     private T[] options = (T[]) new Object[]{};

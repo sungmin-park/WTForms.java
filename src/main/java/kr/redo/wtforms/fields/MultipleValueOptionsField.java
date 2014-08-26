@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 import static kr.redo.wtforms.validators.AbstractValidator.StopValidationException;
 import static kr.redo.wtforms.widgets.CheckBoxWidget.CHECK_BOX_WIDGET;
 
-public class MultipleValueOptionsField<T> extends AbstractField<T> {
+public class MultipleValueOptionsField<T> extends AbstractField {
     private final Transformer<T> transformer;
     private List<T> values = new ArrayList<>();
     private List<T> options = new ArrayList<>();
@@ -29,6 +29,14 @@ public class MultipleValueOptionsField<T> extends AbstractField<T> {
     public MultipleValueOptionsField(Transformer<T> transformer, MultipleValueOptionsWidget widget) {
         this.transformer = transformer;
         this.widget = widget;
+    }
+
+    @SafeVarargs
+    public MultipleValueOptionsField(
+            final Transformer<T> transformer, final MultipleValueOptionsValidator<T>... validators
+    ) {
+        this(transformer);
+        Arrays.stream(validators).forEach(this.validators::add);
     }
 
     @Override

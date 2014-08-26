@@ -5,7 +5,7 @@ import org.rendersnake.HtmlAttributes;
 import org.rendersnake.HtmlAttributesFactory;
 
 abstract public class AbstractWidget {
-    HtmlAttributes makeDefaultAttributes(AbstractField<?> field) {
+    HtmlAttributes makeDefaultAttributes(AbstractField field) {
         return HtmlAttributesFactory.id(field.getParameterName()).name(field.getParameterName());
     }
 }

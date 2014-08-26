@@ -4,5 +4,5 @@ import kr.redo.wtforms.fields.MultipleValueOptionsField;
 
 @FunctionalInterface
 public interface MultipleValueOptionsValidator<T> {
-    public void validate(MultipleValueOptionsField<T> Field) throws Exception;
+    public void validate(MultipleValueOptionsField<T> field) throws Exception;
 }
