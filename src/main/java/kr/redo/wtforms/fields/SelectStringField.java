@@ -2,8 +2,8 @@ package kr.redo.wtforms.fields;
 
 import static kr.redo.wtforms.transformers.StringTransformer.STRING_TRANSFORMER;
 
-public class SelectField extends OptionsField<String> {
-    public SelectField() {
+public class SelectStringField extends OptionsField<String> {
+    public SelectStringField() {
         super(STRING_TRANSFORMER);
     }
 }

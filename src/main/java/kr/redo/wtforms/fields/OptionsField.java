@@ -1,21 +1,25 @@
 package kr.redo.wtforms.fields;
 
 import kr.redo.wtforms.transformers.Transformer;
+import kr.redo.wtforms.validators.OptionsValidator;
 import kr.redo.wtforms.widgets.OptionsWidget;
 import kr.redo.wtforms.widgets.SelectWidget;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static kr.redo.wtforms.validators.AbstractValidator.StopValidationException;
+
 public class OptionsField<T> extends AbstractField {
+    private final List<OptionsValidator<T>> validators = new ArrayList<>();
+    private final Transformer<T> transformer;
+    OptionsWidget widget;
     private Optional<T> value = Optional.empty();
     @SuppressWarnings("unchecked")
     private T[] options = (T[]) new Object[]{};
-
-    private final Transformer<T> transformer;
-    OptionsWidget widget;
 
     public OptionsField(Transformer<T> transformer, OptionsWidget widget) {
         this.transformer = transformer;
@@ -26,13 +30,22 @@ public class OptionsField<T> extends AbstractField {
         this(transformer, SelectWidget.SELECT_WIDGET);
     }
 
+    @SafeVarargs
+    public OptionsField(Transformer<T> transformer, OptionsValidator<T>... validators) {
+        this(transformer);
+        Arrays.stream(validators).forEach(this.validators::add);
+    }
+
     @Override
     public void processData(HttpServletRequest request) {
         final String parameter = request.getParameter(getParameterName());
-        if (parameter == null) {
+        if (parameter == null || parameter.equals("")) {
             return;
         }
         value = Arrays.stream(options).filter(o -> transformer.toParameterValue(o).equals(parameter)).findFirst();
+        if (!value.isPresent()) {
+            addError("not a valid choice.");
+        }
     }
 
     @Override
@@ -42,7 +55,16 @@ public class OptionsField<T> extends AbstractField {
 
     @Override
     public void validate() throws Exception {
-        throw new NotImplementedException();
+        if (hasErrors()) {
+            return;
+        }
+        for (OptionsValidator<T> validator : validators) {
+            try {
+                validator.validate(this);
+            } catch (StopValidationException e) {
+                break;
+            }
+        }
     }
 
     public Optional<T> getValue() {
